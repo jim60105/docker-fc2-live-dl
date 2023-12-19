@@ -1,0 +1,3 @@
+[submodule "fc2-live-dl"]
+	path = fc2-live-dl
+	url = https://github.com/HoloArchivists/fc2-live-dl.git
