@@ -12,7 +12,7 @@ Mount the current directory as `/recordings` and run fc2-live-dl with additional
 The downloaded files will be saved to where you run the command.
 
 ```bash
- docker run -it -v ".:/recordings" ghcr.io/jim60105/fc2-live-dl [options] [fc2 url]
+docker run -it -v ".:/recordings" ghcr.io/jim60105/fc2-live-dl [options] [fc2 url]
 ```
 
 The `[options]`, `[fc2 url]` placeholder should be replaced with the options and arguments for fc2-live-dl. Check the [fc2-live-dl README](https://github.com/HoloArchivists/fc2-live-dl?tab=readme-ov-file#usage) for more information.
@@ -98,3 +98,13 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+## 💭
+
+The main reason I chose not to contribute my work back to the original repository is because I wanted to use the GPL license. I am a advocate for open source and have a great enthusiasm for the GPL license. However, it is important to acknowledge that the GPL license has more restrictions compared to the MIT license, and individuals have valid reasons for not choosing it. I fully respect their decision. Since it is not recommended to have multiple licenses in the same repository, I will distribute my work separately.
+
+Now, you may be wondering why you should choose my image instead of the original one.
+
+I have specifically created these images for fun... oops, focusing on security. I have dedicated years to play with containers. As a result, I have developed certain techniques that allow me to build more robust containers. To assess the difference, you can use tools like [Snyk](https://snyk.io/), [Trivy](https://github.com/aquasecurity/trivy), or even [Docker Scout](https://www.docker.com/products/docker-scout/) to scan the image. While I don't claim that my image is the MOST secure, I am confident that it is MORE security.
+
+I do not intend to criticize anyone who create "Oh, it works" containers. Developing this skill requires learning, and I simply enjoy these toys more than others. I hope you can finds their values.

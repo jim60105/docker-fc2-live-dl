@@ -3,6 +3,9 @@
         "autofc",
         "Buildx",
         "Distroless",
-        "Dockerfiles"
+        "Dockerfiles",
+        "outtmpl",
+        "Snyk",
+        "Trivy"
     ]
 }
