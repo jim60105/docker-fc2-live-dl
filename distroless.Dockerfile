@@ -14,6 +14,7 @@ RUN --mount=type=cache,target=/root/.cache/pip pip3.11 install -r requirements.t
 COPY fc2-live-dl/. .
 
 RUN --mount=type=cache,target=/root/.cache/pip pip3.11 install . && \
+    pip3.11 uninstall -y setuptools pip && \
     pip3.11 uninstall -y setuptools pip
 
 # Make a directory for COPY to final (distroless has no mkdir)

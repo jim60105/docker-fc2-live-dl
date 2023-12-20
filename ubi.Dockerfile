@@ -35,7 +35,10 @@ COPY fc2-live-dl/. .
 
 RUN --mount=type=cache,target=/root/.cache/pip pip3 install .
 
-RUN pip3.11 uninstall -y setuptools
+RUN pip3.11 uninstall -y setuptools pip && \
+    pip3.11 uninstall -y setuptools && \
+    microdnf -y remove python3.11-pip && \
+    microdnf -y clean all 
 
 ### Final image
 FROM base AS final

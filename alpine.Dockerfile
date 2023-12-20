@@ -21,7 +21,8 @@ COPY fc2-live-dl/. .
 RUN --mount=type=cache,id=pip-$TARGETARCH$TARGETVARIANT,sharing=locked,target=/root/.cache/pip pip3.11 install .
 
 # Uninstall inside venv
-RUN pip3.11 uninstall -y setuptools pip
+RUN pip3.11 uninstall -y setuptools pip && \
+    pip3.11 uninstall -y setuptools pip
 
 FROM python:3.11-alpine as final
 
