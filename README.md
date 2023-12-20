@@ -1,6 +1,6 @@
 # docker-fc2-live-dl
 
-[![CodeFactor](https://www.codefactor.io/repository/github/jim60105/docker-fc2-live-dl/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/jim60105/docker-fc2-live-dl)  [![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/jim60105/docker-fc2-live-dl/scan.yml?label=IMAGE%20SCAN&style=for-the-badge)](https://github.com/jim60105/docker-fc2-live-dl/actions/workflows/scan.yml)
+[![CodeFactor](https://www.codefactor.io/repository/github/jim60105/docker-fc2-live-dl/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/jim60105/docker-fc2-live-dl) [![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/jim60105/docker-fc2-live-dl/scan.yml?label=IMAGE%20SCAN&style=for-the-badge)](https://github.com/jim60105/docker-fc2-live-dl/actions/workflows/scan.yml)
 
 This is the docker image for [HoloArchivists/fc2-live-dl: Tool to download FC2 live streams](https://github.com/HoloArchivists/fc2-live-dl) from the community.
 
@@ -19,26 +19,41 @@ The `[options]`, `[fc2 url]` placeholder should be replaced with the options and
 
 You can find all available tags at [ghcr.io](https://github.com/jim60105/docker-fc2-live-dl/pkgs/container/fc2-live-dl/versions?filters%5Bversion_type%5D=tagged) or [quay.io](https://quay.io/repository/jim60105/fc2-live-dl?tab=tags).
 
-## Available Pre-built Image
+## Usage Command for autofc2
+
+When using autofc2, it is recommended to use the provided [docker-compose.yml](docker-compose.yml) file.
+
+Put the [autofc2.json](autofc2.json) file in the same directory as the [docker-compose.yml](docker-compose.yml) file, and execute the following command:
+
+```bash
+docker-compose up -d
+```
+
+Please check the [HoloArchivists/fc2-live-dl README](https://github.com/HoloArchivists/fc2-live-dl/tree/main?tab=readme-ov-file#autofc2) for more information about the json file.
+
+> [!NOTE]  
+> Please be aware that with our docker image, you need to **omit the `--config` parameter** and **use a relative path in outtmpl**.
+
+## Available tags
 
 This repository contains three Dockerfiles for building Docker images based on different base images:
 
-| Dockerfile            | Base Image                                                                                                   |
-| --------------------- | ------------------------------------------------------------------------------------------------------------ |
-| [alpine.Dockerfile](alpine.Dockerfile)            | [Python official image 3.11-alpine](https://hub.docker.com/_/python/)                                                              |
-| [ubi.Dockerfile](ubi.Dockerfile)        | [Red Hat Universal Base Image 9 Minimal](https://catalog.redhat.com/software/containers/ubi9/ubi-minimal/615bd9b4075b022acc111bf5) |
-| [distroless.Dockerfile](distroless.Dockerfile) | [Google Distroless python3-debian12](https://github.com/GoogleContainerTools/distroless)                      |
+| Dockerfile                                     | Base Image                                                                                                                         |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| [alpine.Dockerfile](alpine.Dockerfile)         | [Python official image 3.11-alpine](https://hub.docker.com/_/python/)                                                              |
+| [ubi.Dockerfile](ubi.Dockerfile)               | [Red Hat Universal Base Image 9 Minimal](https://catalog.redhat.com/software/containers/ubi9/ubi-minimal/615bd9b4075b022acc111bf5) |
+| [distroless.Dockerfile](distroless.Dockerfile) | [Google Distroless python3-debian12](https://github.com/GoogleContainerTools/distroless)                                           |
 
 And, built with the following code version of fc2-live-dl: main branch, v2.2.0, v2.1.3.
 
-| Code Version | Alpine | UBI | Distroless |
-| ------------ | ------ | --- | ---------- |
-| [main branch](https://github.com/HoloArchivists/fc2-live-dl)  | `alpine`, `latest` | `ubi` | `distroless` |
-| [v2.2.0](https://github.com/HoloArchivists/fc2-live-dl/releases/tag/v2.2.0)       | `v2.2.0`, `v2.2.0-alpine`| `v2.2.0-ubi` | `v2.2.0-distroless` |
-| [v2.1.3](https://github.com/HoloArchivists/fc2-live-dl/releases/tag/v2.1.3)       | `v2.1.3`, `v2.1.3-alpine`| `v2.1.3-ubi` | `v2.1.3-distroless` |
+| Code Version                                                                | Alpine                    | UBI          | Distroless          |
+| --------------------------------------------------------------------------- | ------------------------- | ------------ | ------------------- |
+| [main branch](https://github.com/HoloArchivists/fc2-live-dl)                | `alpine`, `latest`        | `ubi`        | `distroless`        |
+| [v2.2.0](https://github.com/HoloArchivists/fc2-live-dl/releases/tag/v2.2.0) | `v2.2.0`, `v2.2.0-alpine` | `v2.2.0-ubi` | `v2.2.0-distroless` |
+| [v2.1.3](https://github.com/HoloArchivists/fc2-live-dl/releases/tag/v2.1.3) | `v2.1.3`, `v2.1.3-alpine` | `v2.1.3-ubi` | `v2.1.3-distroless` |
 
 > [!TIP]
-> I've notice that that both the UBI version and the Distroless version offer no advantages over the Alpine version. So, unless you have specific requirements, _**please use the Alpine version**_. All of these base images are great, they were simply not suitable for our project.
+> I've notice that that both the UBI version and the Distroless version offer no advantages over the Alpine version. So _**please use the Alpine version**_ unless you have specific reasons not to. All of these base images are great, some of them were simply not that suitable for our project.
 
 ### Build Command
 

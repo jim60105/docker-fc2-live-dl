@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  autofc2:
+    image: ghcr.io/jim60105/fc2-live-dl:latest
+    # build: .
+    entrypoint: [ "dumb-init", "--", "autofc2" ]
+    volumes:
+      - .:/recordings
+    restart: unless-stopped
+    environment:
+      # Feel free to update this to your local timezone.
+      # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
+      - TZ=Asia/Tokyo
