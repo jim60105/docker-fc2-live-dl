@@ -31,7 +31,7 @@ ENV PATH="/venv/bin:$PATH"
 COPY --link --from=build /venv /venv
 
 # ffmpeg
-COPY --link --from=mwader/static-ffmpeg:6.0 /ffmpeg /usr/bin/
+COPY --link --from=mwader/static-ffmpeg:6.1.1 /ffmpeg /usr/bin/
 
 COPY --link --from=build --chown=1001:1001 /recordings /recordings
 VOLUME [ "/recordings" ]
