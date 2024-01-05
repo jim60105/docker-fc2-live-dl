@@ -23,22 +23,14 @@ ENV PATH="/venv/bin:$PATH"
 ARG PIP_DISABLE_PIP_VERSION_CHECK=1
 ARG PIP_NO_CACHE_DIR=1
 
-RUN microdnf -y install python3.11-pip && \
-    microdnf -y clean all && \
-    ln -s /usr/bin/pip3.11 /usr/bin/pip3
-
 COPY fc2-live-dl/requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip pip3 install dumb-init
 RUN --mount=type=cache,target=/root/.cache/pip pip3 install -r requirements.txt
 
 COPY fc2-live-dl/. .
 
-RUN --mount=type=cache,target=/root/.cache/pip pip3 install .
-
-RUN pip3.11 uninstall -y setuptools pip && \
-    pip3.11 uninstall -y setuptools && \
-    microdnf -y remove python3.11-pip && \
-    microdnf -y clean all 
+RUN --mount=type=cache,target=/root/.cache/pip pip3 install . && \
+    pip3.11 uninstall -y setuptools pip
 
 ### Final image
 FROM base AS final
