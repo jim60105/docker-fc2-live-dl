@@ -42,7 +42,7 @@ This repository contains three Dockerfiles for building Docker images based on d
 | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | [alpine.Dockerfile](alpine.Dockerfile)         | [Python official image 3.11-alpine](https://hub.docker.com/_/python/)                                                              |
 | [ubi.Dockerfile](ubi.Dockerfile)               | [Red Hat Universal Base Image 9 Minimal](https://catalog.redhat.com/software/containers/ubi9/ubi-minimal/615bd9b4075b022acc111bf5) |
-| [distroless.Dockerfile](distroless.Dockerfile) | [Google Distroless python3-debian12](https://github.com/GoogleContainerTools/distroless)                                           |
+| [distroless.Dockerfile](distroless.Dockerfile) | [distroless-python 3.11-debian12](https://github.com/alexdmoss/distroless-python)                                                  |
 
 And, built with the following code version of fc2-live-dl: main branch, v2.2.0, v2.1.3.
 
