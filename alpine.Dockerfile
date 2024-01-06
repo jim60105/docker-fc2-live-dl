@@ -58,3 +58,4 @@ VOLUME [ "/recordings" ]
 
 STOPSIGNAL SIGINT
 ENTRYPOINT [ "dumb-init", "--", "fc2-live-dl" ]
+CMD [ "-h" ]
