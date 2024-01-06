@@ -13,12 +13,13 @@ WORKDIR /app
 
 RUN python3 -m venv /venv
 ENV PATH="/venv/bin:$PATH"
+RUN --mount=type=cache,id=pip-$TARGETARCH$TARGETVARIANT,sharing=locked,target=/root/.cache/pip \
+    --mount=source=fc2-live-dl/requirements.txt,target=requirements.txt \
+    pip wheel --wheel-dir=/root/wheels -r requirements.txt
 
-COPY fc2-live-dl/requirements.txt .
-RUN --mount=type=cache,id=pip-$TARGETARCH$TARGETVARIANT,sharing=locked,target=/root/.cache/pip pip3.11 install -r requirements.txt
-
-COPY fc2-live-dl/. .
-RUN --mount=type=cache,id=pip-$TARGETARCH$TARGETVARIANT,sharing=locked,target=/root/.cache/pip pip3.11 install .
+RUN --mount=type=cache,id=pip-$TARGETARCH$TARGETVARIANT,sharing=locked,target=/root/.cache/pip \
+    --mount=source=fc2-live-dl,target=.,rw \
+    pip wheel --wheel-dir=/root/wheels .
 
 # Uninstall inside venv
 RUN pip3.11 uninstall -y setuptools pip && \
