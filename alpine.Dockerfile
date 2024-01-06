@@ -11,8 +11,6 @@ RUN apk add --no-cache build-base libffi-dev
 
 WORKDIR /app
 
-RUN python3 -m venv /venv
-ENV PATH="/venv/bin:$PATH"
 RUN --mount=type=cache,id=pip-$TARGETARCH$TARGETVARIANT,sharing=locked,target=/root/.cache/pip \
     --mount=source=fc2-live-dl/requirements.txt,target=requirements.txt \
     pip wheel --wheel-dir=/root/wheels -r requirements.txt
@@ -21,18 +19,12 @@ RUN --mount=type=cache,id=pip-$TARGETARCH$TARGETVARIANT,sharing=locked,target=/r
     --mount=source=fc2-live-dl,target=.,rw \
     pip wheel --wheel-dir=/root/wheels .
 
-# Uninstall inside venv
-RUN pip3.11 uninstall -y setuptools pip && \
-    pip3.11 uninstall -y setuptools pip
-
 FROM python:3.11-alpine as final
 
-RUN pip3.11 uninstall -y setuptools pip && \
+RUN --mount=from=build,source=/root/wheels,target=/root/wheels \
+    pip3.11 install --no-index --find-links=/root/wheels fc2-live-dl && \
+    pip3.11 uninstall -y setuptools pip wheel && \
     rm -rf /root/.cache/pip
-
-# Copy venv
-COPY --from=build /venv /venv
-ENV PATH="/venv/bin:$PATH"
 
 # Use dumb-init to handle signals
 RUN apk add --no-cache dumb-init
@@ -50,4 +42,4 @@ USER 1001
 WORKDIR /recordings
 
 STOPSIGNAL SIGINT
-ENTRYPOINT [ "dumb-init", "--", "/venv/bin/fc2-live-dl" ]
+ENTRYPOINT [ "dumb-init", "--", "fc2-live-dl" ]
