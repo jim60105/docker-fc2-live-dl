@@ -1,9 +1,17 @@
-version: '3.7'
-
 services:
   autofc2:
+    container_name: autofc2
     image: ghcr.io/jim60105/fc2-live-dl:latest
-    # build: .
+    user: "1001:0"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - UID=1001
+      cache_from:
+        - ghcr.io/jim60105/fc2-live-dl:cache
+      cache_to:
+        - type=inline
     entrypoint: [ "dumb-init", "--", "autofc2" ]
     volumes:
       - .:/recordings
