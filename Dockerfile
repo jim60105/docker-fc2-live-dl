@@ -6,11 +6,14 @@ ARG RELEASE=0
 ########################################
 # Build stage
 ########################################
-FROM python:3.12-slim as build
+FROM python:3-alpine as build
 
 # RUN mount cache for multi-arch: https://github.com/docker/buildx/issues/549#issuecomment-1788297892
 ARG TARGETARCH
 ARG TARGETVARIANT
+
+# Install build dependencies
+RUN apk add --no-cache build-base libffi-dev
 
 WORKDIR /source
 
@@ -21,9 +24,8 @@ ARG PIP_ROOT_USER_ACTION="ignore"
 ARG PIP_NO_COMPILE="true"
 ARG PIP_DISABLE_PIP_VERSION_CHECK="true"
 
-# Install requirements
 RUN --mount=type=cache,id=pip-$TARGETARCH$TARGETVARIANT,sharing=locked,target=/root/.cache/pip \
-    --mount=source=fc2-live-dl/requirements.txt,target=requirements.txt,rw \
+    --mount=source=fc2-live-dl/requirements.txt,target=requirements.txt \
     pip install -U --force-reinstall pip setuptools wheel && \
     pip install -r requirements.txt
 
@@ -37,10 +39,11 @@ RUN --mount=type=cache,id=pip-$TARGETARCH$TARGETVARIANT,sharing=locked,target=/r
 ########################################
 # Final stage
 ########################################
-FROM python:3.12-slim as final
+FROM python:3-alpine as final
 
-# We don't need them anymore
-RUN pip uninstall -y pip wheel && \
+ARG UID
+
+RUN pip uninstall -y setuptools pip wheel && \
     rm -rf /root/.cache/pip
 
 # ffmpeg
@@ -51,9 +54,8 @@ COPY --link --from=ghcr.io/jim60105/static-ffmpeg-upx:7.0-1 /ffmpeg /usr/bin/
 COPY --link --from=ghcr.io/jim60105/static-ffmpeg-upx:7.0-1 /dumb-init /usr/bin/
 
 # Create user
-ARG UID
-RUN groupadd -g $UID $UID && \
-    useradd -l -u $UID -g $UID -m -s /bin/sh -N $UID
+RUN addgroup -g $UID $UID && \
+    adduser -g "" -D $UID -u $UID -G $UID
 
 # Create directories with correct permissions
 RUN install -d -m 775 -o $UID -g 0 /recordings && \
@@ -63,14 +65,14 @@ RUN install -d -m 775 -o $UID -g 0 /recordings && \
 COPY --link --chown=$UID:0 --chmod=775 LICENSE /licenses/Dockerfile.LICENSE
 COPY --link --chown=$UID:0 --chmod=775 fc2-live-dl/LICENSE /licenses/fc2-live-dl.LICENSE
 
-# Copy dependencies and code (and support arbitrary uid for OpenShift best practice)
+# Copy dist and support arbitrary user ids (OpenShift best practice)
 COPY --link --chown=$UID:0 --chmod=775 --from=build /root/.local /home/$UID/.local
 
 ENV PATH="/home/$UID/.local/bin:$PATH"
-ENV PYTHONPATH="${PYTHONPATH}:/home/$UID/.local/lib/python3.12/site-packages"
+ENV PYTHONPATH="/home/$UID/.local/lib/python3.12/site-packages:${PYTHONPATH}"
 
 # Remove these to prevent the container from executing arbitrary commands
-RUN rm /bin/echo /bin/ln /bin/rm /bin/sh /bin/bash /usr/bin/apt-get
+RUN rm /bin/echo /bin/ln /bin/rm /bin/sh
 
 WORKDIR /recordings
 
