@@ -64,7 +64,7 @@ COPY --link --chown=$UID:0 --chmod=775 LICENSE /licenses/Dockerfile.LICENSE
 COPY --link --chown=$UID:0 --chmod=775 fc2-live-dl/LICENSE /licenses/fc2-live-dl.LICENSE
 
 # Copy dependencies and code (and support arbitrary uid for OpenShift best practice)
-COPY --chown=$UID:0 --chmod=775 --from=build /root/.local /home/$UID/.local
+COPY --link --chown=$UID:0 --chmod=775 --from=build /root/.local /home/$UID/.local
 
 ENV PATH="/home/$UID/.local/bin:$PATH"
 ENV PYTHONPATH="${PYTHONPATH}:/home/$UID/.local/lib/python3.12/site-packages"
