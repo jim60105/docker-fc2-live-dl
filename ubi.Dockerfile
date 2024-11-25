@@ -46,6 +46,9 @@ RUN --mount=type=cache,id=pip-$TARGETARCH$TARGETVARIANT,sharing=locked,target=/r
     --mount=source=fc2-live-dl/requirements.txt,target=requirements.txt \
     pip3.11 install -r requirements.txt
 
+# Ensure the cache is not reused when installing fc2-live-dl
+ARG RELEASE
+
 RUN --mount=type=cache,id=pip-$TARGETARCH$TARGETVARIANT,sharing=locked,target=/root/.cache/pip \
     --mount=source=fc2-live-dl,target=.,rw \
     pip3.11 install . && \
