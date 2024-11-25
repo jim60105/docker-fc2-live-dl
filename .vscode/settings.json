@@ -4,6 +4,7 @@
         "Buildx",
         "Distroless",
         "Dockerfiles",
+        "ffprobe",
         "outtmpl",
         "Snyk",
         "Trivy"
