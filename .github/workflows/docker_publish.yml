@@ -15,6 +15,8 @@ on:
 permissions:
   contents: read
   packages: write
+  id-token: write
+  attestations: write
 
 jobs:
   docker-alpine:
@@ -47,6 +49,7 @@ jobs:
           tag: alpine
 
       - name: Build and push
+        id: build_push_alpine
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -64,6 +67,24 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/fc2-live-dl:cache,mode=max
           sbom: true
           provenance: true
+
+      - name: Attest GHCR image
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ghcr.io/${{ github.repository_owner }}/fc2-live-dl
+          subject-digest: ${{ steps.build_push_alpine.outputs.digest }}
+
+      - name: Attest Docker Hub image
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/fc2-live-dl
+          subject-digest: ${{ steps.build_push_alpine.outputs.digest }}
+
+      - name: Attest Quay image
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: quay.io/${{ github.repository_owner }}/fc2-live-dl
+          subject-digest: ${{ steps.build_push_alpine.outputs.digest }}
 
   docker-ubi:
     runs-on: ubuntu-latest
@@ -95,6 +116,7 @@ jobs:
           tag: ubi
 
       - name: Build and push
+        id: build_push_ubi
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -112,6 +134,24 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/fc2-live-dl:cache,mode=max
           sbom: true
           provenance: true
+
+      - name: Attest GHCR image
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ghcr.io/${{ github.repository_owner }}/fc2-live-dl
+          subject-digest: ${{ steps.build_push_ubi.outputs.digest }}
+
+      - name: Attest Docker Hub image
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/fc2-live-dl
+          subject-digest: ${{ steps.build_push_ubi.outputs.digest }}
+
+      - name: Attest Quay image
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: quay.io/${{ github.repository_owner }}/fc2-live-dl
+          subject-digest: ${{ steps.build_push_ubi.outputs.digest }}
 
   docker-distroless:
     runs-on: ubuntu-latest
@@ -143,6 +183,7 @@ jobs:
           tag: distroless
 
       - name: Build and push
+        id: build_push_distroless
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -160,3 +201,21 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ github.repository_owner }}/fc2-live-dl:cache,mode=max
           sbom: true
           provenance: true
+
+      - name: Attest GHCR image
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ghcr.io/${{ github.repository_owner }}/fc2-live-dl
+          subject-digest: ${{ steps.build_push_distroless.outputs.digest }}
+
+      - name: Attest Docker Hub image
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/fc2-live-dl
+          subject-digest: ${{ steps.build_push_distroless.outputs.digest }}
+
+      - name: Attest Quay image
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: quay.io/${{ github.repository_owner }}/fc2-live-dl
+          subject-digest: ${{ steps.build_push_distroless.outputs.digest }}
