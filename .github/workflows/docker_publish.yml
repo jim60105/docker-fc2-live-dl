@@ -50,7 +50,7 @@ jobs:
 
       - name: Build and push
         id: build_push_alpine
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
@@ -117,7 +117,7 @@ jobs:
 
       - name: Build and push
         id: build_push_ubi
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./ubi.Dockerfile
@@ -184,7 +184,7 @@ jobs:
 
       - name: Build and push
         id: build_push_distroless
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./distroless.Dockerfile
