@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: true
 
@@ -50,7 +50,7 @@ jobs:
 
       - name: Build and push
         id: build_push_alpine
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile
@@ -69,19 +69,19 @@ jobs:
           provenance: true
 
       - name: Attest GHCR image
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: ghcr.io/${{ github.repository_owner }}/fc2-live-dl
           subject-digest: ${{ steps.build_push_alpine.outputs.digest }}
 
       - name: Attest Docker Hub image
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/fc2-live-dl
           subject-digest: ${{ steps.build_push_alpine.outputs.digest }}
 
       - name: Attest Quay image
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: quay.io/${{ github.repository_owner }}/fc2-live-dl
           subject-digest: ${{ steps.build_push_alpine.outputs.digest }}
@@ -91,7 +91,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: true
 
@@ -117,7 +117,7 @@ jobs:
 
       - name: Build and push
         id: build_push_ubi
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./ubi.Dockerfile
@@ -136,19 +136,19 @@ jobs:
           provenance: true
 
       - name: Attest GHCR image
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: ghcr.io/${{ github.repository_owner }}/fc2-live-dl
           subject-digest: ${{ steps.build_push_ubi.outputs.digest }}
 
       - name: Attest Docker Hub image
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/fc2-live-dl
           subject-digest: ${{ steps.build_push_ubi.outputs.digest }}
 
       - name: Attest Quay image
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: quay.io/${{ github.repository_owner }}/fc2-live-dl
           subject-digest: ${{ steps.build_push_ubi.outputs.digest }}
@@ -158,7 +158,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: true
 
@@ -184,7 +184,7 @@ jobs:
 
       - name: Build and push
         id: build_push_distroless
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./distroless.Dockerfile
@@ -203,19 +203,19 @@ jobs:
           provenance: true
 
       - name: Attest GHCR image
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: ghcr.io/${{ github.repository_owner }}/fc2-live-dl
           subject-digest: ${{ steps.build_push_distroless.outputs.digest }}
 
       - name: Attest Docker Hub image
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: index.docker.io/${{ secrets.DOCKERHUB_USERNAME }}/fc2-live-dl
           subject-digest: ${{ steps.build_push_distroless.outputs.digest }}
 
       - name: Attest Quay image
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: quay.io/${{ github.repository_owner }}/fc2-live-dl
           subject-digest: ${{ steps.build_push_distroless.outputs.digest }}
